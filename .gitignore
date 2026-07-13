@@ -1,0 +1,12 @@
+# Build artifacts
+build/
+*.obj
+*.res
+*.ilk
+*.pdb
+*.exe
+
+# Editor/OS cruft
+.vs/
+*.suo
+Thumbs.db
