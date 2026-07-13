@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Easy Setup — set up a fresh Windows PC in a few clicks</title>
+<meta name="description" content="A native Windows app that installs the apps you want, flips the settings you always change, and cleans up the rest. Single exe, no dependencies.">
+<meta name="theme-color" content="#202020">
+<link rel="icon" type="image/png" href="./icon.png">
+<meta property="og:title" content="Easy Setup">
+<meta property="og:description" content="Set up a fresh Windows PC in a few clicks — 63 installers, 37 settings, 35 misc tools, one dark Fluent-styled window.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ryxn3.github.io/easy-setup/">
+<meta property="og:image" content="https://ryxn3.github.io/easy-setup/icon.png">
+<meta name="twitter:card" content="summary">
+<style>
+:root{
+  --bg:#f3f3f3; --surface:#ffffff; --surface-2:#fafafa; --surface-3:#f0f0f0;
+  --text:#1b1b1b; --text-dim:#5f5f5f; --text-faint:#8a8a8a;
+  --border:#e1e1e1; --border-strong:#cfcfcf;
+  --accent:#005fb8; --accent-ink:#ffffff; --good:#107c10; --good-bg:rgba(16,124,16,.1);
+  --code-bg:#eef0f2;
+  --r-sm:6px; --r-md:10px; --r-lg:16px;
+  --font-ui:"Segoe UI Variable Display","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --font-mono:"Cascadia Mono","Cascadia Code",Consolas,"SF Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#202020; --surface:#2b2b2b; --surface-2:#1c1c1c; --surface-3:#323232;
+    --text:#f3f3f3; --text-dim:#a8a8a8; --text-faint:#767676;
+    --border:#333333; --border-strong:#454545;
+    --accent:#60cdff; --accent-ink:#0a1a22; --good:#6ccb5f; --good-bg:rgba(108,203,95,.14);
+    --code-bg:#171717;
+  }
+}
+html[data-theme="dark"]{
+  --bg:#202020; --surface:#2b2b2b; --surface-2:#1c1c1c; --surface-3:#323232;
+  --text:#f3f3f3; --text-dim:#a8a8a8; --text-faint:#767676;
+  --border:#333333; --border-strong:#454545;
+  --accent:#60cdff; --accent-ink:#0a1a22; --good:#6ccb5f; --good-bg:rgba(108,203,95,.14);
+  --code-bg:#171717;
+}
+html[data-theme="light"]{
+  --bg:#f3f3f3; --surface:#ffffff; --surface-2:#fafafa; --surface-3:#f0f0f0;
+  --text:#1b1b1b; --text-dim:#5f5f5f; --text-faint:#8a8a8a;
+  --border:#e1e1e1; --border-strong:#cfcfcf;
+  --accent:#005fb8; --accent-ink:#ffffff; --good:#107c10; --good-bg:rgba(16,124,16,.1);
+  --code-bg:#eef0f2;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font-ui);color:var(--text);background:var(--bg);line-height:1.55;}
+h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
+.es-container{max-width:960px;margin:0 auto;padding:0 24px;}
+.es-mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+.es-btn{font-family:inherit;font-size:14px;font-weight:600;border-radius:var(--r-sm);padding:11px 20px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .15s ease,background .15s ease,border-color .15s ease;text-decoration:none;}
+.es-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.es-btn-primary{background:var(--accent);color:var(--accent-ink);}
+.es-btn-primary:hover{transform:translateY(-1px);filter:brightness(1.06);}
+.es-btn-ghost{background:transparent;color:var(--text);border-color:var(--border-strong);}
+.es-btn-ghost:hover{background:var(--surface-3);}
+.es-icon-btn{background:transparent;border:1px solid var(--border-strong);border-radius:var(--r-sm);width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);cursor:pointer;}
+.es-icon-btn:hover{background:var(--surface-3);}
+.es-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);}
+@media (prefers-reduced-motion: reduce){ *{animation:none !important;transition:none !important;} }
+@media (max-width:720px){
+  .es-hide-mobile{display:none !important;}
+  h1{font-size:32px !important;}
+  #es-mockup{display:none !important;}
+  [style*="repeat(3,1fr)"]{grid-template-columns:1fr !important;}
+  [style*="repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr) !important;}
+  [style*="repeat(10,1fr)"]{grid-template-columns:repeat(5,1fr) !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<div style="border-bottom:1px solid var(--border);">
+  <div class="es-container" style="display:flex;align-items:center;justify-content:space-between;height:64px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect width="26" height="26" rx="6" fill="#23232a"/><rect x="4" y="4" width="8" height="8" rx="2" fill="#ff5d5d"/><rect x="14" y="4" width="8" height="8" rx="2" fill="#4ecb8a"/><rect x="4" y="14" width="8" height="8" rx="2" fill="#5e9eff"/><rect x="14" y="14" width="8" height="8" rx="2" fill="#f5a623"/></svg>
+      <span style="font-weight:600;font-size:15px;">Easy Setup</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="es-icon-btn" id="es-theme-btn" type="button" aria-label="Toggle color theme" title="Toggle color theme">
+        <svg id="es-theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+      </button>
+      <a class="es-btn es-btn-ghost" href="https://github.com/ryxn3/easy-setup">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span class="es-hide-mobile">GitHub</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<div class="es-container" style="padding-top:64px;padding-bottom:56px;">
+  <div style="max-width:640px;">
+    <div style="font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;">Windows &middot; single exe &middot; no installer</div>
+    <h1 style="font-size:44px;line-height:1.12;letter-spacing:-.01em;">Set up a fresh Windows PC in a few clicks.</h1>
+    <p style="font-size:17px;color:var(--text-dim);margin-top:18px;max-width:560px;">
+      Easy Setup is a small native app that installs the apps you want, flips the Windows settings you always change anyway, and cleans up the rest — all from one dark, Fluent-styled window.
+    </p>
+    <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+      <a class="es-btn es-btn-primary" href="https://github.com/ryxn3/easy-setup">Get it on GitHub</a>
+      <button class="es-btn es-btn-ghost" id="es-copy-btn" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11" stroke-linecap="round"/></svg>
+        <span>Copy clone command</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HERO MOCKUP (real app UI, real tokens) ============ -->
+<div class="es-container" style="padding-bottom:72px;">
+  <div id="es-mockup" style="border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 24px 60px -24px rgba(0,0,0,.35);">
+    <div style="background:var(--surface-2);height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg width="15" height="15" viewBox="0 0 26 26"><rect width="26" height="26" rx="6" fill="#23232a"/><rect x="4" y="4" width="8" height="8" rx="2" fill="#ff5d5d"/><rect x="14" y="4" width="8" height="8" rx="2" fill="#4ecb8a"/><rect x="4" y="14" width="8" height="8" rx="2" fill="#5e9eff"/><rect x="14" y="14" width="8" height="8" rx="2" fill="#f5a623"/></svg>
+        <span class="es-mono" style="font-size:12px;color:var(--text-dim);">Easy Setup</span>
+      </div>
+      <div style="display:flex;gap:18px;color:var(--text-faint);">
+        <svg width="10" height="10" viewBox="0 0 10 10"><line x1="0" y1="5" x2="10" y2="5" stroke="currentColor"/></svg>
+        <svg width="10" height="10" viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor"/></svg>
+        <svg width="10" height="10" viewBox="0 0 10 10"><line x1="0" y1="0" x2="10" y2="10" stroke="currentColor"/><line x1="10" y1="0" x2="0" y2="10" stroke="currentColor"/></svg>
+      </div>
+    </div>
+    <div style="display:flex;background:var(--bg);min-height:420px;">
+      <div style="width:168px;flex:none;background:var(--surface-2);border-right:1px solid var(--border);padding:18px 10px;">
+        <div style="display:flex;align-items:center;gap:8px;padding:0 6px 18px;">
+          <svg width="18" height="18" viewBox="0 0 26 26"><rect width="26" height="26" rx="6" fill="#23232a"/><rect x="4" y="4" width="8" height="8" rx="2" fill="#ff5d5d"/><rect x="14" y="4" width="8" height="8" rx="2" fill="#4ecb8a"/><rect x="4" y="14" width="8" height="8" rx="2" fill="#5e9eff"/><rect x="14" y="14" width="8" height="8" rx="2" fill="#f5a623"/></svg>
+          <span style="font-size:13px;font-weight:600;color:var(--text);">Easy Setup</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:8px;color:var(--text-dim);font-size:13px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11 12 4l8 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Home
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:8px;background:var(--surface-3);color:var(--text);font-size:13px;font-weight:600;position:relative;">
+          <span style="position:absolute;left:-10px;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--accent);"></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v13" stroke-linecap="round"/><path d="M7 13l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke-linecap="round"/></svg>
+          Installers
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:8px;color:var(--text-dim);font-size:13px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a2 2 0 0 0 .4 2.2l.1.1a1 1 0 1 1-1.4 1.4l-.1-.1a2 2 0 0 0-2.2-.4 2 2 0 0 0-1.2 1.8v.1a1 1 0 1 1-2 0v-.1a2 2 0 0 0-1.2-1.8 2 2 0 0 0-2.2.4l-.1.1a1 1 0 1 1-1.4-1.4l.1-.1a2 2 0 0 0 .4-2.2 2 2 0 0 0-1.8-1.2H5a1 1 0 1 1 0-2h.1a2 2 0 0 0 1.8-1.2 2 2 0 0 0-.4-2.2l-.1-.1A1 1 0 1 1 7.8 5.4l.1.1a2 2 0 0 0 2.2.4H10a2 2 0 0 0 1.2-1.8V4a1 1 0 1 1 2 0v.1a2 2 0 0 0 1.2 1.8 2 2 0 0 0 2.2-.4l.1-.1a1 1 0 1 1 1.4 1.4l-.1.1a2 2 0 0 0-.4 2.2v.1a2 2 0 0 0 1.8 1.2h.1a1 1 0 1 1 0 2h-.1a2 2 0 0 0-1.8 1.2"/></svg>
+          Windows Settings
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:8px;color:var(--text-dim);font-size:13px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke-linecap="round"/></svg>
+          Misc
+        </div>
+      </div>
+      <div style="flex:1;padding:22px 26px;">
+        <h3 style="font-size:19px;">Installers</h3>
+        <p style="font-size:13px;color:var(--text-dim);margin-top:4px;">Check the apps you want, then install the latest of each.</p>
+        <div style="margin-top:16px;border:1px solid var(--border);border-radius:10px;background:var(--surface);padding:8px 10px;font-size:13px;color:var(--text-faint);">Search apps...</div>
+        <div id="es-rows" style="margin-top:14px;display:flex;flex-direction:column;gap:2px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STATS ============ -->
+<div class="es-container" style="padding-bottom:64px;">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;">
+    <div style="background:var(--surface);padding:22px 20px;text-align:center;">
+      <div class="es-mono" style="font-size:28px;font-weight:600;">63</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-top:4px;">apps to install</div>
+    </div>
+    <div style="background:var(--surface);padding:22px 20px;text-align:center;">
+      <div class="es-mono" style="font-size:28px;font-weight:600;">37</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-top:4px;">Windows toggles</div>
+    </div>
+    <div style="background:var(--surface);padding:22px 20px;text-align:center;">
+      <div class="es-mono" style="font-size:28px;font-weight:600;">35</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-top:4px;">misc tools</div>
+    </div>
+    <div style="background:var(--surface);padding:22px 20px;text-align:center;">
+      <div class="es-mono" style="font-size:28px;font-weight:600;">~450<span style="font-size:15px;">KB</span></div>
+      <div style="font-size:13px;color:var(--text-dim);margin-top:4px;">single exe</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<div class="es-container" style="padding-bottom:72px;">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div class="es-card" style="padding:22px;">
+      <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, var(--accent) 16%, transparent);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:14px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v13" stroke-linecap="round"/><path d="M7 13l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke-linecap="round"/></svg>
+      </div>
+      <h3 style="font-size:16px;">Installers</h3>
+      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Search or check off what you need — Steam, Chrome, VS Code, Docker, 63 apps in all — and install the latest version of everything in one pass via <span class="es-mono">winget</span>.</p>
+    </div>
+    <div class="es-card" style="padding:22px;">
+      <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, var(--good) 16%, transparent);display:flex;align-items:center;justify-content:center;color:var(--good);margin-bottom:14px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a2 2 0 0 0 .4 2.2l.1.1a1 1 0 1 1-1.4 1.4l-.1-.1a2 2 0 0 0-2.2-.4 2 2 0 0 0-1.2 1.8v.1a1 1 0 1 1-2 0v-.1a2 2 0 0 0-1.2-1.8 2 2 0 0 0-2.2.4l-.1.1a1 1 0 1 1-1.4-1.4l.1-.1a2 2 0 0 0 .4-2.2 2 2 0 0 0-1.8-1.2H5a1 1 0 1 1 0-2h.1a2 2 0 0 0 1.8-1.2 2 2 0 0 0-.4-2.2l-.1-.1A1 1 0 1 1 7.8 5.4l.1.1a2 2 0 0 0 2.2.4H10a2 2 0 0 0 1.2-1.8V4a1 1 0 1 1 2 0v.1a2 2 0 0 0 1.2 1.8 2 2 0 0 0 2.2-.4l.1-.1a1 1 0 1 1 1.4 1.4l-.1.1a2 2 0 0 0-.4 2.2v.1a2 2 0 0 0 1.8 1.2h.1a1 1 0 1 1 0 2h-.1a2 2 0 0 0-1.8 1.2"/></svg>
+      </div>
+      <h3 style="font-size:16px;">Windows Settings</h3>
+      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Flip the toggles you reset on every fresh install — taskbar on every monitor, End Task in the right-click menu, dark mode, developer mode — straight from the registry, no digging through Settings.</p>
+    </div>
+    <div class="es-card" style="padding:22px;">
+      <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, #c08ae0 16%, transparent);display:flex;align-items:center;justify-content:center;color:#c08ae0;margin-bottom:14px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke-linecap="round"/></svg>
+      </div>
+      <h3 style="font-size:16px;">Misc</h3>
+      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Startup app management, Disk Cleanup, Device Manager, SFC scans, restore points and 30-odd other one-click shortcuts you'd otherwise have to remember the .cpl name for.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP WALL ============ -->
+<div class="es-container" style="padding-bottom:72px;">
+  <h2 style="font-size:24px;">A few of the 63</h2>
+  <p style="font-size:14px;color:var(--text-dim);margin-top:6px;">Real logos, real brand colors — pulled straight from each app's own icon.</p>
+  <div id="es-applogos" style="display:grid;grid-template-columns:repeat(10,1fr);gap:10px;margin-top:20px;"></div>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<div class="es-container" style="padding-bottom:72px;">
+  <h2 style="font-size:24px;">How it works</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;">
+    <div class="es-card" style="padding:20px;">
+      <div class="es-mono" style="font-size:12px;color:var(--text-faint);margin-bottom:8px;">STEP 1</div>
+      <h3 style="font-size:15px;">Check what you want</h3>
+      <p style="font-size:13px;color:var(--text-dim);margin-top:6px;">Search or browse by category, and flip any settings you like along the way.</p>
+    </div>
+    <div class="es-card" style="padding:20px;">
+      <div class="es-mono" style="font-size:12px;color:var(--text-faint);margin-bottom:8px;">STEP 2</div>
+      <h3 style="font-size:15px;">Click install</h3>
+      <p style="font-size:13px;color:var(--text-dim);margin-top:6px;">Each app installs via <span class="es-mono">winget</span>, always the latest version, with a live log as it runs.</p>
+    </div>
+    <div class="es-card" style="padding:20px;">
+      <div class="es-mono" style="font-size:12px;color:var(--text-faint);margin-bottom:8px;">STEP 3</div>
+      <h3 style="font-size:15px;">Done</h3>
+      <p style="font-size:13px;color:var(--text-dim);margin-top:6px;">A fresh PC, set up your way, in the time it takes to make a coffee.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CTA / BUILD ============ -->
+<div class="es-container" style="padding-bottom:80px;">
+  <div class="es-card" style="padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+    <div>
+      <h2 style="font-size:22px;">Build it yourself</h2>
+      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;max-width:420px;">Single C++ file, Win32 + Direct2D, no runtime dependencies. Needs Visual Studio with the Desktop C++ workload.</p>
+    </div>
+    <div class="es-mono" style="background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 18px;font-size:13px;line-height:1.9;white-space:pre;">git clone https://github.com/ryxn3/easy-setup.git
+cd easy-setup && Build.bat</div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="border-top:1px solid var(--border);">
+  <div class="es-container" style="padding:28px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="font-size:13px;color:var(--text-faint);">Windows 10/11 &middot; winget required for installs &middot; no telemetry</div>
+    <a href="https://github.com/ryxn3/easy-setup" style="font-size:13px;color:var(--text-dim);text-decoration:none;">github.com/ryxn3/easy-setup</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---- theme toggle: defaults to system preference, persists choice ----
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('es-theme'); } catch(e){}
+  if (stored === 'dark' || stored === 'light') root.dataset.theme = stored;
+  function currentIsDark(){
+    if (root.dataset.theme === 'dark') return true;
+    if (root.dataset.theme === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function paintThemeIcon(){
+    var icon = document.getElementById('es-theme-icon');
+    if (currentIsDark()){
+      icon.innerHTML = '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" stroke-linejoin="round"/>';
+    } else {
+      icon.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/>';
+    }
+  }
+  paintThemeIcon();
+  document.getElementById('es-theme-btn').addEventListener('click', function(){
+    root.dataset.theme = currentIsDark() ? 'light' : 'dark';
+    try { localStorage.setItem('es-theme', root.dataset.theme); } catch(e){}
+    paintThemeIcon();
+  });
+
+  // ---- copy clone command ----
+  document.getElementById('es-copy-btn').addEventListener('click', function(){
+    var btn = this, span = btn.querySelector('span');
+    navigator.clipboard.writeText('git clone https://github.com/ryxn3/easy-setup.git').then(function(){
+      span.textContent = 'Copied';
+      setTimeout(function(){ span.textContent = 'Copy clone command'; }, 1800);
+    });
+  });
+
+  // ---- installer rows (real brand colors + real logos, matching the app's DrawAppIcon) ----
+  var ICONS = {
+    steam:    { c:'#3A6EA5', p:'M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z' },
+    discord:  { c:'#5865F2', p:'M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z' },
+    spotify:  { c:'#1DB954', p:'M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z' },
+    chrome:   { c:'#4285F4', p:'M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z' },
+    firefox:  { c:'#E66000', p:'M8.824 7.287c.008 0 .004 0 0 0zm-2.8-1.4c.006 0 .003 0 0 0zm16.754 2.161c-.505-1.215-1.53-2.528-2.333-2.943.654 1.283 1.033 2.57 1.177 3.53l.002.02c-1.314-3.278-3.544-4.6-5.366-7.477-.091-.147-.184-.292-.273-.446a3.545 3.545 0 01-.13-.24 2.118 2.118 0 01-.172-.46.03.03 0 00-.027-.03.038.038 0 00-.021 0l-.006.001a.037.037 0 00-.01.005L15.624 0c-2.585 1.515-3.657 4.168-3.932 5.856a6.197 6.197 0 00-2.305.587.297.297 0 00-.147.37c.057.162.24.24.396.17a5.622 5.622 0 012.008-.523l.067-.005a5.847 5.847 0 011.957.222l.095.03a5.816 5.816 0 01.616.228c.08.036.16.073.238.112l.107.055a5.835 5.835 0 01.368.211 5.953 5.953 0 012.034 2.104c-.62-.437-1.733-.868-2.803-.681 4.183 2.09 3.06 9.292-2.737 9.02a5.164 5.164 0 01-1.513-.292 4.42 4.42 0 01-.538-.232c-1.42-.735-2.593-2.121-2.74-3.806 0 0 .537-2 3.845-2 .357 0 1.38-.998 1.398-1.287-.005-.095-2.029-.9-2.817-1.677-.422-.416-.622-.616-.8-.767a3.47 3.47 0 00-.301-.227 5.388 5.388 0 01-.032-2.842c-1.195.544-2.124 1.403-2.8 2.163h-.006c-.46-.584-.428-2.51-.402-2.913-.006-.025-.343.176-.389.206-.406.29-.787.616-1.136.974-.397.403-.76.839-1.085 1.303a9.816 9.816 0 00-1.562 3.52c-.003.013-.11.487-.19 1.073-.013.09-.026.181-.037.272a7.8 7.8 0 00-.069.667l-.002.034-.023.387-.001.06C.386 18.795 5.593 24 12.016 24c5.752 0 10.527-4.176 11.463-9.661.02-.149.035-.298.052-.448.232-1.994-.025-4.09-.753-5.844z' },
+    vlc:      { c:'#E85E00', p:'M12.0319 0c-.8823 0-1.0545.136-1.0545.136-.1738.056-.3556.255-.4105.43L9.683 3.3808c.4729.1729 1.3222.4266 2.2337.4266 1.0987 0 2.017-.3494 2.3763-.5075L13.4352.566c-.055-.1755-.237-.3707-.4067-.4374 0 0-.1142-.1286-.9966-.1286zm3.5645 7.455c-.3601.34-1.3276.9373-3.6797.9373-2.2929 0-3.189-.5678-3.5213-.9113l-1.3887 4.4227c.2272.3614 1.2539 1.5594 4.8847 1.5594 3.7569 0 4.8539-1.3467 5.0649-1.6737zm-8.5897 4.4487l-1.0025 3.1922H4.3428c-.2486 0-.5097.1932-.5826.4315l-2.334 7.6317a.3962.3962 0 0 0-.0169.1537c-.0008.0053-.002.0099-.002.016 0 .0839.0233.226.0233.226.0322.2456.2612.4452.5098.4452h20.1192c.2487 0 .4768-.1994.5098-.4453 0 0 .0234-.142.0234-.226a.0245.0245 0 0 0-.0025-.01.3201.3201 0 0 0 .0024-.0313.4096.4096 0 0 0-.019-.1282l-2.3339-7.6318c-.0729-.2383-.334-.4314-.5826-.4314h-1.6636l.2005.6391c-.2407.4854-1.4886 2.38-6.3027 2.38-4.6003 0-5.8288-1.73-6.1107-2.3072z' },
+    git:      { c:'#F05133', p:'M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z' },
+    python:   { c:'#3776AB', p:'M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z' },
+    node:     { c:'#539E43', p:'M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z' },
+    obsidian: { c:'#7C3AED', p:'M19.355 18.538a68.967 68.959 0 0 0 1.858-2.954.81.81 0 0 0-.062-.9c-.516-.685-1.504-2.075-2.042-3.362-.553-1.321-.636-3.375-.64-4.377a1.707 1.707 0 0 0-.358-1.05l-3.198-4.064a3.744 3.744 0 0 1-.076.543c-.106.503-.307 1.004-.536 1.5-.134.29-.29.6-.446.914l-.31.626c-.516 1.068-.997 2.227-1.132 3.59-.124 1.26.046 2.73.815 4.481.128.011.257.025.386.044a6.363 6.363 0 0 1 3.326 1.505c.916.79 1.744 1.922 2.415 3.5zM8.199 22.569c.073.012.146.02.22.02.78.024 2.095.092 3.16.29.87.16 2.593.64 4.01 1.055 1.083.316 2.198-.548 2.355-1.664.114-.814.33-1.735.725-2.58l-.01.005c-.67-1.87-1.522-3.078-2.416-3.849a5.295 5.295 0 0 0-2.778-1.257c-1.54-.216-2.952.19-3.84.45.532 2.218.368 4.829-1.425 7.531zM5.533 9.938c-.023.1-.056.197-.098.29L2.82 16.059a1.602 1.602 0 0 0 .313 1.772l4.116 4.24c2.103-3.101 1.796-6.02.836-8.3-.728-1.73-1.832-3.081-2.55-3.831zM9.32 14.01c.615-.183 1.606-.465 2.745-.534-.683-1.725-.848-3.233-.716-4.577.154-1.552.7-2.847 1.235-3.95.113-.235.223-.454.328-.664.149-.297.288-.577.419-.86.217-.47.379-.885.46-1.27.08-.38.08-.72-.014-1.043-.095-.325-.297-.675-.68-1.06a1.6 1.6 0 0 0-1.475.36l-4.95 4.452a1.602 1.602 0 0 0-.513.952l-.427 2.83c.672.59 2.328 2.316 3.335 4.711.09.21.175.43.253.653z' },
+    docker:   { c:'#2496ED', p:'M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z' },
+    github:   { c:'#2B3137', p:'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12' },
+    bitwarden:{ c:'#175DDC', p:'M21.722.296A.964.964 0 0 0 21.018 0H2.982a.959.959 0 0 0-.703.296.96.96 0 0 0-.297.702v12c0 .895.174 1.783.523 2.665.349.88.783 1.66 1.3 2.345.517.68 1.132 1.346 1.848 1.993a21.807 21.807 0 0 0 1.98 1.609c.605.427 1.235.83 1.893 1.212.657.381 1.125.638 1.4.772.276.134.5.241.664.311a.916.916 0 0 0 .814 0c.168-.073.389-.177.667-.311.275-.134.743-.394 1.401-.772a25.305 25.305 0 0 0 1.894-1.212A21.891 21.891 0 0 0 18.348 20c.716-.647 1.33-1.31 1.847-1.993s.949-1.463 1.3-2.345c.35-.879.524-1.767.524-2.665V1.001a.95.95 0 0 0-.297-.705zm-2.325 12.815c0 4.344-7.397 8.087-7.397 8.087V2.57h7.397v10.54z' },
+    blender:  { c:'#E87D0D', p:'M12.51 13.214c.046-.8.438-1.506 1.03-2.006a3.424 3.424 0 0 1 2.212-.79c.85 0 1.631.3 2.211.79.592.5.983 1.206 1.028 2.005.045.823-.285 1.586-.865 2.153a3.389 3.389 0 0 1-2.374.938 3.393 3.393 0 0 1-2.376-.938c-.58-.567-.91-1.33-.865-2.152M7.35 14.831c.006.314.106.922.256 1.398a7.372 7.372 0 0 0 1.593 2.757 8.227 8.227 0 0 0 2.787 2.001 8.947 8.947 0 0 0 3.66.76 8.964 8.964 0 0 0 3.657-.772 8.285 8.285 0 0 0 2.785-2.01 7.428 7.428 0 0 0 1.592-2.762 6.964 6.964 0 0 0 .25-3.074 7.123 7.123 0 0 0-1.016-2.779 7.764 7.764 0 0 0-1.852-2.043h.002L13.566 2.55l-.02-.015c-.492-.378-1.319-.376-1.86.002-.547.382-.609 1.015-.123 1.415l-.001.001 3.126 2.543-9.53.01h-.013c-.788.001-1.545.518-1.695 1.172-.154.665.38 1.217 1.2 1.22V8.9l4.83-.01-8.62 6.617-.034.025c-.813.622-1.075 1.658-.563 2.313.52.667 1.625.668 2.447.004L7.414 14s-.069.52-.063.831zm12.09 1.741c-.97.988-2.326 1.548-3.795 1.55-1.47.004-2.827-.552-3.797-1.538a4.51 4.51 0 0 1-1.036-1.622 4.282 4.282 0 0 1 .282-3.519 4.702 4.702 0 0 1 1.153-1.371c.942-.768 2.141-1.183 3.396-1.185 1.256-.002 2.455.41 3.398 1.175.48.391.87.854 1.152 1.367a4.28 4.28 0 0 1 .522 1.706 4.236 4.236 0 0 1-.239 1.811 4.54 4.54 0 0 1-1.035 1.626' },
+    telegram: { c:'#2AABEE', p:'M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z' },
+    epic:     { c:'#2F2F2F', p:'M3.537 0C2.165 0 1.66.506 1.66 1.879V18.44a4.262 4.262 0 00.02.433c.031.3.037.59.316.92.027.033.311.245.311.245.153.075.258.13.43.2l8.335 3.491c.433.199.614.276.928.27h.002c.314.006.495-.071.928-.27l8.335-3.492c.172-.07.277-.124.43-.2 0 0 .284-.211.311-.243.28-.33.285-.621.316-.92a4.261 4.261 0 00.02-.434V1.879c0-1.373-.506-1.88-1.878-1.88zm13.366 3.11h.68c1.138 0 1.688.553 1.688 1.696v1.88h-1.374v-1.8c0-.369-.17-.54-.523-.54h-.235c-.367 0-.537.17-.537.539v5.81c0 .369.17.54.537.54h.262c.353 0 .523-.171.523-.54V8.619h1.373v2.143c0 1.144-.562 1.71-1.7 1.71h-.694c-1.138 0-1.7-.566-1.7-1.71V4.82c0-1.144.562-1.709 1.7-1.709zm-12.186.08h3.114v1.274H6.117v2.603h1.648v1.275H6.117v2.774h1.74v1.275h-3.14zm3.816 0h2.198c1.138 0 1.7.564 1.7 1.708v2.445c0 1.144-.562 1.71-1.7 1.71h-.799v3.338h-1.4zm4.53 0h1.4v9.201h-1.4zm-3.13 1.235v3.392h.575c.354 0 .523-.171.523-.54V4.965c0-.368-.17-.54-.523-.54z' },
+    zip:      { c:'#2E7D32', p:'M0 18.858h24V8.181H10.717V5.142H0ZM2.021 7.271h6.657v1.994c-1.74 2.09-2.84 4.502-2.948 7.404H3.477c.09-2.501.353-4.954 2.283-6.994l.033-.033H2.021Zm8.45 1.253h13.215v10.143H10.47Zm6.01 1.213v6.871h1.482v-6.87Zm2.755.043v6.912h1.616v-2.42h1.029c.43-.001.754-.29.969-.716.427-.848.429-2.257-.024-3.092-.227-.419-.571-.697-1.033-.684zm-7.924.002v1.596h2.217l-2.304 3.736v1.54h4.287V15.1h-2.698l2.786-3.909v-1.41Zm9.452 1.512h.595c.164-.006.287.081.371.217.17.273.172.736.004.99a.364.364 0 0 1-.373.176l-.55.047z' },
+    obs:      { c:'#4B4B52', p:'M12,24C5.383,24,0,18.617,0,12S5.383,0,12,0s12,5.383,12,12S18.617,24,12,24z M12,1.109 C5.995,1.109,1.11,5.995,1.11,12C1.11,18.005,5.995,22.89,12,22.89S22.89,18.005,22.89,12C22.89,5.995,18.005,1.109,12,1.109z M6.182,5.99c0.352-1.698,1.503-3.229,3.05-3.996c-0.269,0.273-0.595,0.483-0.844,0.78c-1.02,1.1-1.48,2.692-1.199,4.156 c0.355,2.235,2.455,4.06,4.732,4.028c1.765,0.079,3.485-0.937,4.348-2.468c1.848,0.063,3.645,1.017,4.7,2.548 c0.54,0.799,0.962,1.736,0.991,2.711c-0.342-1.295-1.202-2.446-2.375-3.095c-1.135-0.639-2.529-0.802-3.772-0.425 c-1.56,0.448-2.849,1.723-3.293,3.293c-0.377,1.25-0.216,2.628,0.377,3.772c-0.825,1.429-2.315,2.449-3.932,2.756 c-1.244,0.261-2.551,0.059-3.709-0.464c1.036,0.302,2.161,0.355,3.191-0.011c1.381-0.457,2.522-1.567,3.024-2.935 c0.556-1.49,0.345-3.261-0.591-4.54c-0.7-1.007-1.803-1.717-3.002-1.969c-0.38-0.068-0.764-0.098-1.148-0.134 c-0.611-1.231-0.834-2.66-0.528-3.996L6.182,5.99z' },
+    brave:    { c:'#FB542B', p:'M15.68 0l2.096 2.38s1.84-.512 2.709.358c.868.87 1.584 1.638 1.584 1.638l-.562 1.381.715 2.047s-2.104 7.98-2.35 8.955c-.486 1.919-.818 2.66-2.198 3.633-1.38.972-3.884 2.66-4.293 2.916-.409.256-.92.692-1.38.692-.46 0-.97-.436-1.38-.692a185.796 185.796 0 01-4.293-2.916c-1.38-.973-1.712-1.714-2.197-3.633-.247-.975-2.351-8.955-2.351-8.955l.715-2.047-.562-1.381s.716-.768 1.585-1.638c.868-.87 2.708-.358 2.708-.358L8.321 0h7.36zm-3.679 14.936c-.14 0-1.038.317-1.758.69-.72.373-1.242.637-1.409.742-.167.104-.065.301.087.409.152.107 2.194 1.69 2.393 1.866.198.175.489.464.687.464.198 0 .49-.29.688-.464.198-.175 2.24-1.759 2.392-1.866.152-.108.254-.305.087-.41-.167-.104-.689-.368-1.41-.741-.72-.373-1.617-.69-1.757-.69zm0-11.278s-.409.001-1.022.206-1.278.46-1.584.46c-.307 0-2.581-.434-2.581-.434S4.119 7.152 4.119 7.849c0 .697.339.881.68 1.243l2.02 2.149c.192.203.59.511.356 1.066-.235.555-.58 1.26-.196 1.977.384.716 1.042 1.194 1.464 1.115.421-.08 1.412-.598 1.776-.834.364-.237 1.518-1.19 1.518-1.554 0-.365-1.193-1.02-1.413-1.168-.22-.15-1.226-.725-1.247-.95-.02-.227-.012-.293.284-.851.297-.559.831-1.304.742-1.8-.089-.495-.95-.753-1.565-.986-.615-.232-1.799-.671-1.947-.74-.148-.068-.11-.133.339-.175.448-.043 1.719-.212 2.292-.052.573.16 1.552.403 1.632.532.079.13.149.134.067.579-.081.445-.5 2.581-.541 2.96-.04.38-.12.63.288.724.409.094 1.097.256 1.333.256s.924-.162 1.333-.256c.408-.093.329-.344.288-.723-.04-.38-.46-2.516-.541-2.961-.082-.445-.012-.45.067-.579.08-.129 1.059-.372 1.632-.532.573-.16 1.845.009 2.292.052.449.042.487.107.339.175-.148.069-1.332.508-1.947.74-.615.233-1.476.49-1.565.986-.09.496.445 1.241.742 1.8.297.558.304.624.284.85-.02.226-1.026.802-1.247.95-.22.15-1.413.804-1.413 1.169 0 .364 1.154 1.317 1.518 1.554.364.236 1.355.755 1.776.834.422.079 1.08-.4 1.464-1.115.384-.716.039-1.422-.195-1.977-.235-.555.163-.863.355-1.066l2.02-2.149c.341-.362.68-.546.68-1.243 0-.697-2.695-3.96-2.695-3.96s-2.274.436-2.58.436c-.307 0-.972-.256-1.585-.461-.613-.205-1.022-.206-1.022-.206z' },
+    notion:   { c:'#2F2F2F', p:'M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z' }
+  };
+
+  var HERO_ROWS = [
+    { id:'steam',   name:'Steam',        idtxt:'Valve.Steam',       checked:true,  installed:false },
+    { id:'discord', name:'Discord',      idtxt:'Discord.Discord',   checked:true,  installed:false },
+    { id:'spotify', name:'Spotify',      idtxt:'Spotify.Spotify',   checked:false, installed:true  },
+    { id:'chrome',  name:'Google Chrome',idtxt:'Google.Chrome',     checked:false, installed:true  },
+    { id:'obsidian',name:'Obsidian',     idtxt:'Obsidian.Obsidian', checked:true,  installed:false }
+  ];
+
+  function tile(iconKey, size){
+    var i = ICONS[iconKey];
+    return '<div style="width:'+size+'px;height:'+size+'px;border-radius:9px;background:'+i.c+';display:flex;align-items:center;justify-content:center;flex:none;position:relative;overflow:hidden;">'
+      + '<div style="position:absolute;inset:0 0 50% 0;background:rgba(255,255,255,.08);"></div>'
+      + '<svg width="'+Math.round(size*0.56)+'" height="'+Math.round(size*0.56)+'" viewBox="0 0 24 24" fill="#fff" style="position:relative;"><path d="'+i.p+'"/></svg>'
+      + '</div>';
+  }
+
+  var rowsHtml = HERO_ROWS.map(function(r, idx){
+    var bg = r.checked ? 'var(--surface-3)' : 'transparent';
+    var check = r.checked
+      ? '<div style="width:16px;height:16px;border-radius:4px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="3"><path d="M4 12l6 6L20 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+      : '<div style="width:16px;height:16px;border-radius:4px;border:1.4px solid var(--border-strong);flex:none;"></div>';
+    var right = r.installed
+      ? '<span style="font-size:11px;color:var(--good);background:var(--good-bg);padding:3px 9px;border-radius:8px;font-weight:600;">installed</span>'
+      : '';
+    return '<div style="opacity:0;transform:translateY(6px);animation:es-row-in .5s ease forwards;animation-delay:'+(idx*70)+'ms;display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:8px;background:'+bg+';">'
+      + check + tile(r.id, 30)
+      + '<div style="flex:1;min-width:0;"><div style="font-size:13px;color:var(--text);">'+r.name+'</div><div class="es-mono" style="font-size:11px;color:var(--text-faint);">'+r.idtxt+'</div></div>'
+      + right + '</div>';
+  }).join('');
+  document.getElementById('es-rows').innerHTML = rowsHtml;
+
+  var kf = document.createElement('style');
+  kf.textContent = '@keyframes es-row-in{to{opacity:1;transform:translateY(0);}}';
+  document.head.appendChild(kf);
+
+  var WALL = ['steam','discord','epic','chrome','firefox','brave','spotify','vlc','zip','obs','git','python','node','docker','github','notion','obsidian','telegram','bitwarden','blender'];
+  var wallHtml = WALL.map(function(k){ return tile(k, 44); }).join('')
+    + '<div style="width:44px;height:44px;border-radius:9px;background:var(--surface-3);border:1px dashed var(--border-strong);display:flex;align-items:center;justify-content:center;color:var(--text-faint);font-size:11px;font-weight:600;" class="es-mono">+43</div>';
+  document.getElementById('es-applogos').innerHTML = wallHtml;
+})();
+</script>
+</body>
+</html>

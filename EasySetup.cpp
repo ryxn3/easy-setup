@@ -920,7 +920,7 @@ int BrandColor(const std::wstring& name, const std::wstring& id) {
         {L"steam",0x3A6EA5},{L"epic",0x2F2F2F},{L"electronicarts",0xF12E2E},{L"ubisoft",0x1F6FEB},{L"gog",0x9B4DCA},
         {L"battlenet",0x1787D6},{L"discord",0x5865F2},{L"zoom",0x2D8CFF},{L"teams",0x6264A7},{L"telegram",0x2AABEE},
         {L"slack",0x4A154B},{L"chrome",0x4285F4},{L"firefox",0xE66000},{L"brave",0xFB542B},{L"spotify",0x1DB954},
-        {L"vlc",0xE85E00},{L"7zip",0x2E7D32},{L"qbittorrent",0x2F67B2},{L"obs",0x4B4B52},{L"sharex",0x5A9BD4},
+        {L"vlc",0xE85E00},{L"7zip",0x2E7D32},{L"qbittorrent",0x2F67B2},{L"obsstudio",0x4B4B52},{L"sharex",0x5A9BD4},
         {L"visualstudiocode",0x2C81C6},{L"git.git",0xF05133},{L"notepad",0x6BA539},{L"powertoys",0x4B6EAF},
         {L"python",0x3776AB},{L"nodejs",0x539E43},
         // expanded catalogue
