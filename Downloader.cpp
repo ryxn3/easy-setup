@@ -20,6 +20,7 @@
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "uuid.lib")
+#pragma comment(lib, "advapi32.lib")
 
 using namespace Gdiplus;
 
@@ -186,6 +187,47 @@ static void RelaunchElevated() {
     }
     // If the user cancels the UAC prompt, ShellExecuteW just returns a low
     // value (commonly ERROR_CANCELLED) and we simply stay on the error page.
+}
+
+static bool IsProcessElevated() {
+    bool elevated = false;
+    HANDLE token = nullptr;
+    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) {
+        TOKEN_ELEVATION te{};
+        DWORD size = sizeof(te);
+        if (GetTokenInformation(token, TokenElevation, &te, sizeof(te), &size)) {
+            elevated = te.TokenIsElevated != 0;
+        }
+        CloseHandle(token);
+    }
+    return elevated;
+}
+
+// Adds a "Easy Setup" shortcut so the app shows up when you search the Start
+// menu. Uses the all-users Start Menu folder when running elevated (matches
+// a Program Files install everyone can find), otherwise the per-user one —
+// never fails the install itself if this doesn't work, it's a nice-to-have.
+static void CreateStartMenuShortcut(const std::wstring& targetPath) {
+    PWSTR folder = nullptr;
+    REFKNOWNFOLDERID folderId = IsProcessElevated() ? FOLDERID_CommonPrograms : FOLDERID_Programs;
+    if (FAILED(SHGetKnownFolderPath(folderId, 0, nullptr, &folder))) return;
+    std::wstring shortcutPath = JoinPath(folder, L"Easy Setup.lnk");
+    CoTaskMemFree(folder);
+
+    IShellLinkW* psl = nullptr;
+    if (FAILED(CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLinkW, (void**)&psl))) return;
+
+    psl->SetPath(targetPath.c_str());
+    psl->SetWorkingDirectory(DirOf(targetPath).c_str());
+    psl->SetDescription(L"Set up a fresh Windows PC in a few clicks");
+    psl->SetIconLocation(targetPath.c_str(), 0);
+
+    IPersistFile* ppf = nullptr;
+    if (SUCCEEDED(psl->QueryInterface(IID_IPersistFile, (void**)&ppf))) {
+        ppf->Save(shortcutPath.c_str(), TRUE);
+        ppf->Release();
+    }
+    psl->Release();
 }
 
 static void BrowseForPath() {
@@ -539,6 +581,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     switch (msg) {
     case WM_APP_DONE:
         if ((LONG)wp != g_downloadGeneration) return 0;
+        CreateStartMenuShortcut(g_destPath);
         GoToPage(PAGE_DONE);
         return 0;
     case WM_APP_ERROR: {
