@@ -189,12 +189,17 @@ html[data-theme="light"] .es-aurora__blob{mix-blend-mode:normal;opacity:.22;}
       Easy Setup is a small native app that installs the apps you want, flips the Windows settings you always change anyway, and cleans up the rest — all from one dark, Fluent-styled window.
     </p>
     <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
-      <a class="es-btn es-btn-primary" href="https://github.com/ryxn3/easy-setup">Get it on GitHub</a>
+      <a class="es-btn es-btn-primary" href="EasySetupDownloader.exe" download id="es-download-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13" stroke-linecap="round"/><path d="M7 11l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke-linecap="round"/></svg>
+        <span>Download for Windows</span>
+      </a>
+      <a class="es-btn es-btn-ghost" href="https://github.com/ryxn3/easy-setup">Get it on GitHub</a>
       <button class="es-btn es-btn-ghost" id="es-copy-btn" type="button">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11" stroke-linecap="round"/></svg>
         <span>Copy clone command</span>
       </button>
     </div>
+    <div style="font-size:12px;color:var(--text-faint);margin-top:10px;">Downloads a small (~140KB) launcher that fetches and runs the latest build — Windows may show a SmartScreen prompt since this isn't code-signed yet.</div>
   </div>
 </div>
 

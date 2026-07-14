@@ -6,6 +6,10 @@ build/
 *.pdb
 *.exe
 
+# ...except the hosted binaries the website's download button serves
+!docs/EasySetup.exe
+!docs/EasySetupDownloader.exe
+
 # Editor/OS cruft
 .vs/
 *.suo
