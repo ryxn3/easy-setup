@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Easy Setup — visitor stats</title>
+<meta name="description" content="Live visitor stats for Easy Setup.">
+<meta name="theme-color" content="#202020">
+<link rel="icon" type="image/png" href="../icon.png">
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --bg:#f3f3f3; --surface:#ffffff; --surface-2:#fafafa; --surface-3:#f0f0f0;
+  --text:#1b1b1b; --text-dim:#5f5f5f; --text-faint:#8a8a8a;
+  --border:#e1e1e1; --border-strong:#cfcfcf;
+  --accent:#005fb8; --accent-ink:#ffffff; --good:#107c10; --good-bg:rgba(16,124,16,.1);
+  --code-bg:#eef0f2;
+  --r-sm:6px; --r-md:10px; --r-lg:16px;
+  --font-ui:"Segoe UI Variable Display","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --font-mono:"Cascadia Mono","Cascadia Code",Consolas,"SF Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#202020; --surface:#2b2b2b; --surface-2:#1c1c1c; --surface-3:#323232;
+    --text:#f3f3f3; --text-dim:#a8a8a8; --text-faint:#767676;
+    --border:#333333; --border-strong:#454545;
+    --accent:#60cdff; --accent-ink:#0a1a22; --good:#6ccb5f; --good-bg:rgba(108,203,95,.14);
+    --code-bg:#171717;
+  }
+}
+html[data-theme="dark"]{
+  --bg:#202020; --surface:#2b2b2b; --surface-2:#1c1c1c; --surface-3:#323232;
+  --text:#f3f3f3; --text-dim:#a8a8a8; --text-faint:#767676;
+  --border:#333333; --border-strong:#454545;
+  --accent:#60cdff; --accent-ink:#0a1a22; --good:#6ccb5f; --good-bg:rgba(108,203,95,.14);
+  --code-bg:#171717;
+}
+html[data-theme="light"]{
+  --bg:#f3f3f3; --surface:#ffffff; --surface-2:#fafafa; --surface-3:#f0f0f0;
+  --text:#1b1b1b; --text-dim:#5f5f5f; --text-faint:#8a8a8a;
+  --border:#e1e1e1; --border-strong:#cfcfcf;
+  --accent:#005fb8; --accent-ink:#ffffff; --good:#107c10; --good-bg:rgba(16,124,16,.1);
+  --code-bg:#eef0f2;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font-ui);color:var(--text);background:var(--bg);line-height:1.55;min-height:100vh;}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px 80px;}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--border);margin-bottom:48px;}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);}
+.brand span{font-weight:600;font-size:15px;}
+.icon-btn{background:transparent;border:1px solid var(--border-strong);border-radius:var(--r-sm);width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);cursor:pointer;}
+.icon-btn:hover{background:var(--surface-3);}
+h1{font-size:28px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--text-dim);font-size:14px;margin:0 0 40px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;position:relative;overflow:hidden;}
+.card-label{font-size:13px;color:var(--text-dim);display:flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--good);flex:none;}
+.dot.live{animation:pulse 1.8s ease infinite;box-shadow:0 0 0 0 var(--good-bg);}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(108,203,95,.5);}
+  70%{box-shadow:0 0 0 10px rgba(108,203,95,0);}
+  100%{box-shadow:0 0 0 0 rgba(108,203,95,0);}
+}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:52px;font-weight:600;margin-top:14px;letter-spacing:-.02em;}
+.num.err{font-size:15px;color:var(--text-faint);font-family:var(--font-ui);font-weight:400;}
+.updated{font-size:12px;color:var(--text-faint);margin-top:10px;}
+.note{margin-top:32px;font-size:13px;color:var(--text-faint);border-top:1px solid var(--border);padding-top:20px;line-height:1.7;}
+.note code{font-family:var(--font-mono);background:var(--code-bg);padding:1px 6px;border-radius:4px;font-size:12px;}
+@media (max-width:560px){ .grid{grid-template-columns:1fr;} }
+@media (prefers-reduced-motion: reduce){ *{animation:none !important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a class="brand" href="../">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect width="26" height="26" rx="6" fill="#23232a"/><rect x="4" y="4" width="8" height="8" rx="2" fill="#ff5d5d"/><rect x="14" y="4" width="8" height="8" rx="2" fill="#4ecb8a"/><rect x="4" y="14" width="8" height="8" rx="2" fill="#5e9eff"/><rect x="14" y="14" width="8" height="8" rx="2" fill="#f5a623"/></svg>
+      <span>Easy Setup</span>
+    </a>
+    <button class="icon-btn" id="theme-btn" type="button" aria-label="Toggle color theme" title="Toggle color theme">
+      <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <h1>Visitor stats</h1>
+  <p class="sub">Tracked with a tiny anonymous counter — no analytics account, no cookies, no login.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label"><span class="dot live" id="online-dot"></span> Online right now</div>
+      <div class="num" id="online-num">—</div>
+      <div class="updated" id="online-updated">loading…</div>
+    </div>
+    <div class="card">
+      <div class="card-label"><span class="dot" style="background:var(--accent)"></span> Visits all-time</div>
+      <div class="num" id="total-num">—</div>
+      <div class="updated" id="total-updated">loading…</div>
+    </div>
+  </div>
+
+  <div class="note">
+    "Online right now" counts open tabs on the main site (incremented on load, decremented when the tab closes) — it's a best-effort live count, not a certified analytics number: a crashed tab or force-quit browser can occasionally leave it a little high until it naturally settles. "Visits all-time" counts page loads, not unique people, so refreshes count again. Powered by <code>counterapi.dev</code>, a free anonymous counter — nothing about you is tracked or stored.
+  </div>
+</div>
+
+<script>
+(function(){
+  var NS = 'easysetup-ryxn3';
+  var API = 'https://api.counterapi.dev/v1/' + NS + '/';
+
+  // ---- theme toggle (mirrors main site) ----
+  var root = document.documentElement;
+  var stored = null;
+  try { stored = localStorage.getItem('es-theme'); } catch(e){}
+  if (stored === 'dark' || stored === 'light') root.dataset.theme = stored;
+  function isDark(){
+    if (root.dataset.theme === 'dark') return true;
+    if (root.dataset.theme === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function paintIcon(){
+    var icon = document.getElementById('theme-icon');
+    icon.innerHTML = isDark()
+      ? '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" stroke-linejoin="round"/>'
+      : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/>';
+  }
+  paintIcon();
+  document.getElementById('theme-btn').addEventListener('click', function(){
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    try { localStorage.setItem('es-theme', root.dataset.theme); } catch(e){}
+    paintIcon();
+  });
+
+  // ---- stats polling (read-only, never increments/decrements) ----
+  function fmtTime(){
+    return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  }
+  function readCounter(name, numEl, updatedEl){
+    fetch(API + name + '/', { cache: 'no-store' })
+      .then(function(r){ if (!r.ok) throw new Error('bad status ' + r.status); return r.json(); })
+      .then(function(data){
+        var count = typeof data.count === 'number' ? data.count : 0;
+        numEl.textContent = Math.max(0, count).toLocaleString();
+        numEl.classList.remove('err');
+        updatedEl.textContent = 'updated ' + fmtTime();
+      })
+      .catch(function(){
+        updatedEl.textContent = 'couldn\'t reach the counter — retrying…';
+      });
+  }
+  function pollAll(){
+    readCounter('online', document.getElementById('online-num'), document.getElementById('online-updated'));
+    readCounter('total', document.getElementById('total-num'), document.getElementById('total-updated'));
+  }
+  pollAll();
+  setInterval(pollAll, 5000);
+})();
+</script>
+</body>
+</html>

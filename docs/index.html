@@ -924,5 +924,19 @@ cd easy-setup && Build.bat</div>
   onScrollAll(); // initial paint
 })();
 </script>
+
+<!-- anonymous visit counter for /dashboard — no cookies, no accounts, just a hit counter -->
+<script>
+(function(){
+  var API = 'https://api.counterapi.dev/v1/easysetup-ryxn3/';
+  function hit(name, dir){
+    try { fetch(API + name + '/' + dir, { mode: 'cors', keepalive: true, cache: 'no-store' }).catch(function(){}); } catch(e){}
+  }
+  hit('total', 'up');
+  hit('online', 'up');
+  window.addEventListener('pageshow', function(e){ if (e.persisted) hit('online', 'up'); });
+  window.addEventListener('pagehide', function(){ hit('online', 'down'); });
+})();
+</script>
 </body>
 </html>
