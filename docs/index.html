@@ -65,11 +65,61 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
 .es-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);}
 
 /* ---- scroll progress bar ---- */
-#es-progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:100;width:0%;transition:width .05s linear;}
+#es-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),#b78dff);z-index:100;width:0%;transition:width .05s linear;box-shadow:0 0 12px var(--accent);}
 
 /* ---- nav ---- */
-#es-nav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);transition:box-shadow .25s ease,background .25s ease;}
+#es-nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 82%, transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:box-shadow .25s ease,background .25s ease;}
 #es-nav.es-scrolled{box-shadow:0 8px 24px -16px rgba(0,0,0,.35);}
+
+/* ---- ambient background: aurora blobs + grain ---- */
+.es-aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;}
+.es-aurora__blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;will-change:transform;}
+html:not([data-theme="light"]) .es-aurora__blob{mix-blend-mode:screen;}
+@media (prefers-color-scheme:light){ html:not([data-theme="dark"]) .es-aurora__blob{mix-blend-mode:normal;opacity:.22;} }
+html[data-theme="light"] .es-aurora__blob{mix-blend-mode:normal;opacity:.22;}
+.es-aurora__blob:nth-child(1){width:52vw;height:52vw;top:-18vw;left:-14vw;background:radial-gradient(circle,var(--accent),transparent 70%);animation:es-drift-a 26s ease-in-out infinite;}
+.es-aurora__blob:nth-child(2){width:44vw;height:44vw;top:18vh;right:-16vw;background:radial-gradient(circle,#c17fff,transparent 70%);animation:es-drift-b 32s ease-in-out infinite;}
+.es-aurora__blob:nth-child(3){width:40vw;height:40vw;bottom:-10vw;left:20vw;background:radial-gradient(circle,#4ecb8a,transparent 70%);animation:es-drift-c 30s ease-in-out infinite;}
+@keyframes es-drift-a{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(6vw,8vh) scale(1.15);}}
+@keyframes es-drift-b{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-7vw,6vh) scale(1.1);}}
+@keyframes es-drift-c{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(5vw,-6vh) scale(1.12);}}
+.es-grain{position:fixed;inset:-100px;z-index:-1;opacity:.035;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ---- cursor glow ---- */
+#es-cursor-glow{position:fixed;top:0;left:0;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb, var(--accent) 20%, transparent),transparent 70%);pointer-events:none;z-index:1;opacity:0;transition:opacity .4s ease;will-change:transform;}
+
+/* ---- gradient headline ---- */
+.es-gradient-text{background:linear-gradient(90deg,var(--text) 0%,var(--accent) 35%,#b78dff 60%,var(--text) 100%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:es-gradient-shift 8s ease infinite;}
+@keyframes es-gradient-shift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+/* ---- 3D tilt targets ---- */
+.es-tilt-wrap{perspective:1400px;}
+.es-tilt{transition:transform .4s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d;will-change:transform;}
+.es-spot{position:relative;isolation:isolate;}
+.es-spot::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb, var(--accent) 16%, transparent),transparent 65%);opacity:0;transition:opacity .35s ease;pointer-events:none;z-index:5;}
+.es-spot:hover::before{opacity:1;}
+
+/* ---- tour stage-change pop ---- */
+@keyframes es-tour-pop{0%{filter:brightness(1);}35%{filter:brightness(1.12);}100%{filter:brightness(1);}}
+.es-pop{animation:es-tour-pop .5s ease;}
+
+/* ---- glow button ---- */
+.es-btn-primary{position:relative;box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);}
+.es-btn-primary:hover{box-shadow:0 8px 28px -6px color-mix(in srgb, var(--accent) 65%, transparent);}
+
+/* ---- orbiting logo ring (hero decoration) ---- */
+.es-orbit{position:absolute;inset:0;perspective:900px;pointer-events:none;z-index:0;}
+.es-orbit__ring{position:absolute;top:52%;left:78%;width:460px;height:460px;margin:-230px 0 0 -230px;transform:rotateX(72deg) rotateZ(0deg);transform-style:preserve-3d;animation:es-orbit-spin 34s linear infinite;}
+.es-orbit__item{position:absolute;top:50%;left:50%;width:34px;height:34px;margin:-17px;transform-style:preserve-3d;opacity:.85;}
+@keyframes es-orbit-spin{to{transform:rotateX(72deg) rotateZ(360deg);}}
+@media (max-width:960px){.es-orbit{display:none;}}
+
+/* ---- marquee 3D coverflow tiles ---- */
+.es-marquee-track{perspective:900px;}
+.es-marquee-track > div{transition:transform .3s ease,box-shadow .3s ease;}
+.es-marquee-track > div:nth-child(odd){transform:rotateY(10deg);}
+.es-marquee-track > div:nth-child(even){transform:rotateY(-10deg);}
+.es-marquee-track > div:hover{transform:rotateY(0) translateZ(14px) scale(1.12) !important;box-shadow:0 14px 30px -10px rgba(0,0,0,.4);}
 
 /* ---- generic scroll reveal ---- */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
@@ -80,6 +130,9 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important;}
   .reveal,.reveal-scale{opacity:1 !important;transform:none !important;}
+  .es-tilt{transform:none !important;}
+  #es-cursor-glow,.es-orbit{display:none !important;}
+  .es-gradient-text{animation:none;background-position:0 0;}
   html{scroll-behavior:auto;}
 }
 @media (max-width:720px){
@@ -89,9 +142,14 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
   [style*="repeat(3,1fr)"]{grid-template-columns:1fr !important;}
   [style*="repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr) !important;}
 }
+@media (hover:none){ #es-cursor-glow{display:none;} }
 </style>
 </head>
 <body>
+
+<div class="es-aurora" aria-hidden="true"><div class="es-aurora__blob"></div><div class="es-aurora__blob"></div><div class="es-aurora__blob"></div></div>
+<div class="es-grain" aria-hidden="true"></div>
+<div id="es-cursor-glow" aria-hidden="true"></div>
 
 <div id="es-progress"></div>
 
@@ -115,10 +173,11 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
 </div>
 
 <!-- ============ HERO ============ -->
-<div class="es-container" id="es-hero" style="padding-top:64px;padding-bottom:56px;">
-  <div id="es-hero-inner" style="max-width:640px;">
+<div class="es-container" id="es-hero" style="padding-top:64px;padding-bottom:56px;position:relative;">
+  <div class="es-orbit" id="es-orbit" aria-hidden="true"><div class="es-orbit__ring" id="es-orbit-ring"></div></div>
+  <div id="es-hero-inner" style="max-width:640px;position:relative;z-index:1;">
     <div style="font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;">Windows &middot; single exe &middot; no installer</div>
-    <h1 style="font-size:44px;line-height:1.12;letter-spacing:-.01em;">Set up a fresh Windows PC in a few clicks.</h1>
+    <h1 class="es-gradient-text" style="font-size:44px;line-height:1.12;letter-spacing:-.01em;">Set up a fresh Windows PC in a few clicks.</h1>
     <p style="font-size:17px;color:var(--text-dim);margin-top:18px;max-width:560px;">
       Easy Setup is a small native app that installs the apps you want, flips the Windows settings you always change anyway, and cleans up the rest — all from one dark, Fluent-styled window.
     </p>
@@ -133,8 +192,8 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
 </div>
 
 <!-- ============ HERO MOCKUP (real app UI, real tokens) ============ -->
-<div class="es-container reveal-scale" id="es-mockup-wrap" style="padding-bottom:72px;">
-  <div id="es-mockup" style="border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 24px 60px -24px rgba(0,0,0,.35);">
+<div class="es-container reveal-scale es-tilt-wrap" id="es-mockup-wrap" style="padding-bottom:72px;">
+  <div id="es-mockup" class="es-tilt es-spot" style="border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 24px 60px -24px rgba(0,0,0,.35);">
     <div style="background:var(--surface-2);height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);">
       <div style="display:flex;align-items:center;gap:8px;">
         <svg width="15" height="15" viewBox="0 0 26 26"><rect width="26" height="26" rx="6" fill="#23232a"/><rect x="4" y="4" width="8" height="8" rx="2" fill="#ff5d5d"/><rect x="14" y="4" width="8" height="8" rx="2" fill="#4ecb8a"/><rect x="4" y="14" width="8" height="8" rx="2" fill="#5e9eff"/><rect x="14" y="14" width="8" height="8" rx="2" fill="#f5a623"/></svg>
@@ -205,26 +264,32 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
 <!-- ============ FEATURES ============ -->
 <div class="es-container" style="padding-bottom:72px;">
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-    <div class="es-card reveal" style="padding:22px;">
-      <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, var(--accent) 16%, transparent);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:14px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v13" stroke-linecap="round"/><path d="M7 13l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke-linecap="round"/></svg>
+    <div class="reveal es-tilt-wrap">
+      <div class="es-card es-tilt es-spot" style="padding:22px;">
+        <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, var(--accent) 16%, transparent);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v13" stroke-linecap="round"/><path d="M7 13l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 21h14" stroke-linecap="round"/></svg>
+        </div>
+        <h3 style="font-size:16px;">Installers</h3>
+        <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Search or check off what you need — Steam, Chrome, VS Code, Docker, 63 apps in all — and install the latest version of everything in one pass via <span class="es-mono">winget</span>.</p>
       </div>
-      <h3 style="font-size:16px;">Installers</h3>
-      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Search or check off what you need — Steam, Chrome, VS Code, Docker, 63 apps in all — and install the latest version of everything in one pass via <span class="es-mono">winget</span>.</p>
     </div>
-    <div class="es-card reveal" style="padding:22px;transition-delay:.08s;">
-      <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, var(--good) 16%, transparent);display:flex;align-items:center;justify-content:center;color:var(--good);margin-bottom:14px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a2 2 0 0 0 .4 2.2l.1.1a1 1 0 1 1-1.4 1.4l-.1-.1a2 2 0 0 0-2.2-.4 2 2 0 0 0-1.2 1.8v.1a1 1 0 1 1-2 0v-.1a2 2 0 0 0-1.2-1.8 2 2 0 0 0-2.2.4l-.1.1a1 1 0 1 1-1.4-1.4l.1-.1a2 2 0 0 0 .4-2.2 2 2 0 0 0-1.8-1.2H5a1 1 0 1 1 0-2h.1a2 2 0 0 0 1.8-1.2 2 2 0 0 0-.4-2.2l-.1-.1A1 1 0 1 1 7.8 5.4l.1.1a2 2 0 0 0 2.2.4H10a2 2 0 0 0 1.2-1.8V4a1 1 0 1 1 2 0v.1a2 2 0 0 0 1.2 1.8 2 2 0 0 0 2.2-.4l.1-.1a1 1 0 1 1 1.4 1.4l-.1.1a2 2 0 0 0-.4 2.2v.1a2 2 0 0 0 1.8 1.2h.1a1 1 0 1 1 0 2h-.1a2 2 0 0 0-1.8 1.2"/></svg>
+    <div class="reveal es-tilt-wrap" style="transition-delay:.08s;">
+      <div class="es-card es-tilt es-spot" style="padding:22px;">
+        <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, var(--good) 16%, transparent);display:flex;align-items:center;justify-content:center;color:var(--good);margin-bottom:14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a2 2 0 0 0 .4 2.2l.1.1a1 1 0 1 1-1.4 1.4l-.1-.1a2 2 0 0 0-2.2-.4 2 2 0 0 0-1.2 1.8v.1a1 1 0 1 1-2 0v-.1a2 2 0 0 0-1.2-1.8 2 2 0 0 0-2.2.4l-.1.1a1 1 0 1 1-1.4-1.4l.1-.1a2 2 0 0 0 .4-2.2 2 2 0 0 0-1.8-1.2H5a1 1 0 1 1 0-2h.1a2 2 0 0 0 1.8-1.2 2 2 0 0 0-.4-2.2l-.1-.1A1 1 0 1 1 7.8 5.4l.1.1a2 2 0 0 0 2.2.4H10a2 2 0 0 0 1.2-1.8V4a1 1 0 1 1 2 0v.1a2 2 0 0 0 1.2 1.8 2 2 0 0 0 2.2-.4l.1-.1a1 1 0 1 1 1.4 1.4l-.1.1a2 2 0 0 0-.4 2.2v.1a2 2 0 0 0 1.8 1.2h.1a1 1 0 1 1 0 2h-.1a2 2 0 0 0-1.8 1.2"/></svg>
+        </div>
+        <h3 style="font-size:16px;">Windows Settings</h3>
+        <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Flip the toggles you reset on every fresh install — taskbar on every monitor, End Task in the right-click menu, dark mode, developer mode — straight from the registry, no digging through Settings.</p>
       </div>
-      <h3 style="font-size:16px;">Windows Settings</h3>
-      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Flip the toggles you reset on every fresh install — taskbar on every monitor, End Task in the right-click menu, dark mode, developer mode — straight from the registry, no digging through Settings.</p>
     </div>
-    <div class="es-card reveal" style="padding:22px;transition-delay:.16s;">
-      <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, #c08ae0 16%, transparent);display:flex;align-items:center;justify-content:center;color:#c08ae0;margin-bottom:14px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke-linecap="round"/></svg>
+    <div class="reveal es-tilt-wrap" style="transition-delay:.16s;">
+      <div class="es-card es-tilt es-spot" style="padding:22px;">
+        <div style="width:38px;height:38px;border-radius:9px;background:color-mix(in srgb, #c08ae0 16%, transparent);display:flex;align-items:center;justify-content:center;color:#c08ae0;margin-bottom:14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke-linecap="round"/></svg>
+        </div>
+        <h3 style="font-size:16px;">Misc</h3>
+        <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Startup app management, Disk Cleanup, Device Manager, SFC scans, restore points and 30-odd other one-click shortcuts you'd otherwise have to remember the .cpl name for.</p>
       </div>
-      <h3 style="font-size:16px;">Misc</h3>
-      <p style="font-size:14px;color:var(--text-dim);margin-top:8px;">Startup app management, Disk Cleanup, Device Manager, SFC scans, restore points and 30-odd other one-click shortcuts you'd otherwise have to remember the .cpl name for.</p>
     </div>
   </div>
 </div>
@@ -245,8 +310,9 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
         <div class="es-tour-stage" data-stage="3" style="font-size:13px;padding:8px 10px;border-radius:8px;color:var(--text-faint);transition:color .2s ease,background .2s ease;">Misc</div>
       </div>
       <!-- pinned window -->
-      <div style="flex:1;min-width:0;">
-        <div id="es-tour-window" style="border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 30px 70px -30px rgba(0,0,0,.5);background:var(--bg);">
+      <div style="flex:1;min-width:0;perspective:1600px;position:relative;">
+        <div id="es-tour-glow" aria-hidden="true" style="position:absolute;inset:-40px;border-radius:30px;background:radial-gradient(closest-side,color-mix(in srgb, var(--accent) 30%, transparent),transparent 75%);filter:blur(30px);opacity:0;transition:opacity .5s ease;pointer-events:none;z-index:0;"></div>
+        <div id="es-tour-window" style="position:relative;z-index:1;border-radius:14px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 30px 70px -30px rgba(0,0,0,.5);background:var(--bg);transition:box-shadow .3s ease;">
           <div style="background:var(--surface-2);height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);">
             <div style="display:flex;align-items:center;gap:8px;">
               <svg width="15" height="15" viewBox="0 0 26 26"><rect width="26" height="26" rx="6" fill="#23232a"/><rect x="4" y="4" width="8" height="8" rx="2" fill="#ff5d5d"/><rect x="14" y="4" width="8" height="8" rx="2" fill="#4ecb8a"/><rect x="4" y="14" width="8" height="8" rx="2" fill="#5e9eff"/><rect x="14" y="14" width="8" height="8" rx="2" fill="#f5a623"/></svg>
@@ -301,8 +367,8 @@ h1,h2,h3{text-wrap:balance;font-weight:600;margin:0;}
   <p class="reveal" style="font-size:14px;color:var(--text-dim);margin-top:6px;transition-delay:.05s;">Real logos, real brand colors — pulled straight from each app's own icon.</p>
 </div>
 <div style="overflow:hidden;padding:8px 0 72px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);">
-  <div id="es-marquee-1" style="display:flex;gap:14px;width:max-content;"></div>
-  <div id="es-marquee-2" style="display:flex;gap:14px;width:max-content;margin-top:14px;"></div>
+  <div id="es-marquee-1" class="es-marquee-track" style="display:flex;gap:14px;width:max-content;"></div>
+  <div id="es-marquee-2" class="es-marquee-track" style="display:flex;gap:14px;width:max-content;margin-top:14px;"></div>
 </div>
 
 <!-- ============ HOW IT WORKS ============ -->
@@ -467,6 +533,64 @@ cd easy-setup && Build.bat</div>
     [m1, m2].forEach(function(el){
       el.parentElement.addEventListener('mouseenter', function(){ el.style.animationPlayState = 'paused'; });
       el.parentElement.addEventListener('mouseleave', function(){ el.style.animationPlayState = 'running'; });
+    });
+  }
+
+  var canHover = window.matchMedia('(hover:hover)').matches;
+
+  // ---- orbiting logo ring behind hero ----
+  var ORBIT_ICONS = ['steam','discord','spotify','chrome','obsidian','docker','github','vlc'];
+  var orbitRing = document.getElementById('es-orbit-ring');
+  if (orbitRing) {
+    orbitRing.innerHTML = ORBIT_ICONS.map(function(k, i){
+      var ang = (360 / ORBIT_ICONS.length) * i;
+      return '<div class="es-orbit__item" style="transform:rotateZ(' + ang + 'deg) translateX(210px) rotateZ(' + (-ang) + 'deg) rotateX(-72deg);">' + tile(k, 34) + '</div>';
+    }).join('');
+  }
+
+  // ---- global cursor glow ----
+  var cursorGlow = document.getElementById('es-cursor-glow');
+  if (canHover && !reduceMotion && cursorGlow) {
+    var glowTicking = false, glowX = 0, glowY = 0;
+    document.addEventListener('mousemove', function(e){
+      glowX = e.clientX; glowY = e.clientY;
+      cursorGlow.style.opacity = '1';
+      if (!glowTicking) {
+        requestAnimationFrame(function(){
+          cursorGlow.style.transform = 'translate(' + glowX + 'px,' + glowY + 'px)';
+          glowTicking = false;
+        });
+        glowTicking = true;
+      }
+    });
+    document.addEventListener('mouseleave', function(){ cursorGlow.style.opacity = '0'; });
+  }
+
+  // ---- 3D tilt-on-hover (hero mockup + feature cards) ----
+  if (canHover && !reduceMotion) {
+    document.querySelectorAll('.es-tilt-wrap').forEach(function(wrap){
+      var target = wrap.querySelector('.es-tilt');
+      if (!target) return;
+      var ticking = false, mx = 0.5, my = 0.5;
+      wrap.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        mx = (e.clientX - r.left) / r.width;
+        my = (e.clientY - r.top) / r.height;
+        if (!ticking) {
+          requestAnimationFrame(function(){
+            var rx = (0.5 - my) * 10;
+            var ry = (mx - 0.5) * 10;
+            target.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) scale3d(1.01,1.01,1.01)';
+            target.style.setProperty('--mx', (mx * 100) + '%');
+            target.style.setProperty('--my', (my * 100) + '%');
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      wrap.addEventListener('mouseleave', function(){
+        target.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      });
     });
   }
 
@@ -643,6 +767,8 @@ cd easy-setup && Build.bat</div>
   var tourStageLabels = document.querySelectorAll('.es-tour-stage');
   var tourNavItems = document.querySelectorAll('.es-tour-nav');
   var tourMobileLabel = document.getElementById('es-tour-mobile-label');
+  var tourWindowEl = document.getElementById('es-tour-window');
+  var tourGlowEl = document.getElementById('es-tour-glow');
   var STAGE_NAMES = ['Home', 'Installers', 'Windows Settings', 'Misc'];
   var lastStageRendered = -1, lastSubBucket = -1;
 
@@ -653,7 +779,14 @@ cd easy-setup && Build.bat</div>
   function renderStage(stage, sub){
     var subBucket = Math.round(sub * 20); // quantize to reduce re-renders
     if (stage === lastStageRendered && subBucket === lastSubBucket) return;
+    var stageChanged = stage !== lastStageRendered;
     lastStageRendered = stage; lastSubBucket = subBucket;
+
+    if (stageChanged && !reduceMotion && tourWindowEl) {
+      tourWindowEl.classList.remove('es-pop');
+      void tourWindowEl.offsetWidth; // restart animation
+      tourWindowEl.classList.add('es-pop');
+    }
 
     if (stage === 0) tourContent.innerHTML = renderTourHome();
     else if (stage === 1) tourContent.innerHTML = renderTourInstallers(sub);
@@ -688,6 +821,15 @@ cd easy-setup && Build.bat</div>
     var stage = Math.min(STAGES - 1, Math.floor(scaled));
     var sub = scaled - stage;
     renderStage(stage, sub);
+
+    if (!reduceMotion && tourWindowEl) {
+      var tilt = (0.5 - progress) * 14; // +7deg entering, 0 mid-scroll, -7deg leaving
+      tourWindowEl.style.transform = 'rotateX(' + tilt.toFixed(2) + 'deg)';
+    }
+    if (tourGlowEl) {
+      var focus = 1 - Math.abs(0.5 - progress) * 2; // peaks at the midpoint
+      tourGlowEl.style.opacity = String(Math.max(0, focus * 0.8));
+    }
   }
 
   // ---- single rAF-throttled scroll handler driving everything above ----
